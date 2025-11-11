@@ -1,0 +1,258 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Something Special</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#ff5c8a;--muted:#9aa5b1}
+    *{box-sizing:border-box}html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{background:radial-gradient(1200px 600px at 10% 10%, rgba(255,92,138,0.08),transparent), radial-gradient(900px 500px at 90% 90%, rgba(66,153,225,0.06),transparent),var(--bg);color:#e6eef6;display:flex;align-items:center;justify-content:center;padding:20px}
+    .wrap{width:100%;max-width:920px}
+    header{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#6fb3ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#081226}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:14px}.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);padding:18px;border-radius:16px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+
+.stage{display:grid;grid-template-columns:1fr 360px;gap:20px}
+@media(max-width:880px){.stage{grid-template-columns:1fr;}
+  .right{order:2}
+}
+
+.left{padding:14px}
+.story{background:linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:14px;border-radius:12px}
+.line{font-size:16px;margin:10px 0}
+.meta{font-size:13px;color:var(--muted)}
+
+.quiz{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.q{background:#071124;padding:12px;border-radius:10px}
+.q h3{margin:0;font-size:14px}
+.options{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button.opt{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px;color:inherit;cursor:pointer}
+button.opt.selected{border-color:var(--accent);background:linear-gradient(90deg, rgba(255,92,138,0.08), rgba(111,179,255,0.03))}
+
+.right{padding:14px;display:flex;flex-direction:column;gap:12px}
+.game{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:12px;border-radius:12px;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.heart{width:120px;height:120px;background:conic-gradient(from 200deg at 50% 50%, #ff5c8a, #ffb6d5);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transform:scale(1);transition:transform .12s}
+.heart:active{transform:scale(.96)}
+.heart svg{filter:drop-shadow(0 6px 18px rgba(255,92,138,0.25))}
+.score{margin-top:12px;color:var(--muted)}
+
+.final{display:none;flex-direction:column;gap:12px;align-items:center}
+.proposal{font-size:20px;font-weight:700}
+.proposal-sub{color:var(--muted)}
+.btns{display:flex;gap:10px}
+.btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+.btn.yes{background:linear-gradient(90deg,var(--accent),#ff8fb3);color:#081226}
+.btn.no{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+.confetti{position:fixed;left:0;top:0;right:0;bottom:0;pointer-events:none}
+
+footer{margin-top:12px;color:var(--muted);font-size:13px;text-align:center}
+
+/* playful small animations */
+.tease{display:inline-block;transform-origin:50% 70%;animation:tease 3s infinite}
+@keyframes tease{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px) rotate(-2deg)}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">♥</div>
+      <div>
+        <h1>Something a little different</h1>
+        <p class="lead">A playful, cute & slightly flirty experience. Built to be used by anyone — no names shown.</p>
+      </div>
+    </header><div class="card stage">
+  <div class="left">
+    <div class="story">
+      <div class="line">Hey — you're here. Welcome. Let's make this fun.</div>
+      <div class="meta">This adventure mixes a tiny quiz, a sweet game, and a final question. It was crafted by someone confident, playful, and a little flirty — but they keep their name secret (on purpose).</div>
+
+      <div class="quiz" id="quiz">
+        <div class="q" data-q="0">
+          <h3>1) Pick a date idea you’d actually enjoy:</h3>
+          <div class="options">
+            <button class="opt">Coffee & a sunset walk</button>
+            <button class="opt">Arcade + silly competition</button>
+            <button class="opt">Cook dinner together</button>
+          </div>
+        </div>
+
+        <div class="q" data-q="1">
+          <h3>2) What's your vibe on surprises?</h3>
+          <div class="options">
+            <button class="opt">Love them</button>
+            <button class="opt">Cute if planned</button>
+            <button class="opt">Nope, tell me first</button>
+          </div>
+        </div>
+
+        <div class="q" data-q="2">
+          <h3>3) Pick a movie snack:</h3>
+          <div class="options">
+            <button class="opt">Popcorn</button>
+            <button class="opt">Chocolate</button>
+            <button class="opt">Nachos</button>
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <button id="unlock" class="btn" style="background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px">Unlock the next surprise</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="margin-top:12px" class="card">
+      <div style="font-weight:700">A short note</div>
+      <div style="margin-top:6px;color:var(--muted)">If the final question matters to you, answer honestly (no pressure). If it's awkward, the site has exits and jokes. You're free to play and then close the tab — no history, no names.</div>
+    </div>
+
+  </div>
+
+  <div class="right">
+    <div class="game" id="game">
+      <div class="heart" id="heart" title="Tap me!" role="button" aria-label="heart button">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21s-7.5-4.8-9.5-7.2C-0.3 10.9 3.3 6 7 6c2.6 0 3.9 1.7 5 3.1C13.1 7.7 14.4 6 17 6c3.7 0 7.3 4.9 4.5 7.8C19.5 16.2 12 21 12 21z" fill="#fff" fill-opacity="0.95"/>
+        </svg>
+      </div>
+      <div class="score" id="score">Tap the heart to earn hearts — 7 opens the final surprise</div>
+
+      <div class="final" id="final">
+        <div class="proposal">Will you be my girlfriend?</div>
+        <div class="proposal-sub">A confident, playful someone who's been a little flirty — says it loud and simple.</div>
+        <div class="btns">
+          <button class="btn yes" id="yes">Yes 💖</button>
+          <button class="btn no" id="no">No (be honest)</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;gap:8px;flex-direction:column">
+      <div class="card" style="padding:12px">
+        <div style="font-weight:700">Playful sidebar</div>
+        <div style="margin-top:8px;color:var(--muted)">Little prompts and teases pop up depending on what you clicked. If you say yes — expect confetti and a sweet scene. If not — a cheeky tease and an option to try again (or to politely decline).</div>
+      </div>
+
+      <div class="card" style="padding:12px;display:flex;gap:8px;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-weight:700">Music</div>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">Romantic background track enabled. Tap play if it didn't start.</div>
+        </div>
+        <div>
+          <button id="audioToggle" class="btn">Play</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>Made to be shared — no names shown. Use it, reuse it, and tweak the text if you want.</div>
+</footer>
+
+  </div><canvas id="confetti" class="confetti"></canvas>
+
+  <audio id="bgm" loop crossorigin="anonymous">
+    <!-- Replace the src with any royalty-free romantic track URL. Example placeholder below. -->
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7f6d2b1c7b.mp3?filename=romantic-piano-11013.mp3" type="audio/mpeg">
+  </audio>  <script>
+    // --- Quiz logic ---
+    const opts = Array.from(document.querySelectorAll('.opt'));
+    const questions = document.querySelectorAll('.q');
+    opts.forEach(b=>b.addEventListener('click', e=>{
+      const parent = e.target.closest('.q');
+      parent.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
+      e.target.classList.add('selected');
+    }));
+
+    document.getElementById('unlock').addEventListener('click', ()=>{
+      const allAnswered = Array.from(questions).every(q=>q.querySelector('.opt.selected'));
+      if(!allAnswered){
+        flash("Answer all the little things — it helps unlock the fun.");
+        return;
+      }
+      // reveal playful tip
+      flash("Nice picks. Now: tap the heart like you mean it.");
+    });
+
+    function flash(msg){
+      const el = document.createElement('div');
+      el.textContent = msg;el.style.position='fixed';el.style.left='50%';el.style.top='14%';el.style.transform='translateX(-50%)';el.style.background='rgba(2,6,23,0.9)';el.style.padding='10px 14px';el.style.borderRadius='10px';el.style.border='1px solid rgba(255,255,255,0.03)';el.style.zIndex=9999;el.style.fontSize='14px';document.body.appendChild(el);
+      setTimeout(()=>el.remove(),2300);
+    }
+
+    // --- Heart tap game ---
+    let score=0;const heart=document.getElementById('heart'), scoreEl=document.getElementById('score'), finalEl=document.getElementById('final');
+    heart.addEventListener('click',()=>{
+      score++; scoreEl.textContent = `Hearts collected: ${score} / 7`;
+      popHeart(); smallBounce(heart);
+      maybeTease();
+      if(score>=7){
+        revealFinal();
+      }
+    });
+
+    function popHeart(){
+      const p=document.createElement('div');p.textContent='💗';p.style.position='fixed';const r=heart.getBoundingClientRect();p.style.left=(r.left + r.width/2 - 12)+'px';p.style.top=(r.top + 10)+'px';p.style.fontSize='22px';p.style.pointerEvents='none';document.body.appendChild(p);
+      p.animate([{transform:'translateY(0)',opacity:1},{transform:'translateY(-90px)',opacity:0}],{duration:900,easing:'cubic-bezier(.2,.9,.1,1)'});
+      setTimeout(()=>p.remove(),950);
+    }
+    function smallBounce(el){el.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:220});}
+
+    function maybeTease(){
+      if(score===2) flash('Already liking this — bold move.');
+      if(score===4) flash('Okay, now you're being dangerously cute.');
+      if(score===6) flash('One more and the secret comes out...');
+    }
+
+    function revealFinal(){
+      finalEl.style.display='flex';
+      scoreEl.style.display='none';
+      document.getElementById('quiz').style.opacity='0.6';
+    }
+
+    // --- Proposal outcome ---
+    document.getElementById('yes').addEventListener('click', ()=>{
+      playBgm();
+      startConfetti();
+      finalEl.innerHTML = `<div style="text-align:center"><div style="font-size:22px;font-weight:800">Yes! 💖</div><div style="color:var(--muted);margin-top:6px">They said yes — congrats. Want to send a cheeky follow-up message from the site?</div><div style="margin-top:12px"><button id=follow class='btn' style='background:transparent;border:1px solid rgba(255,255,255,0.06)'>Send a playful message</button></div></div>`;
+      setTimeout(()=>{
+        const f=document.getElementById('follow'); if(f) f.addEventListener('click', ()=>{flash('Saved — you can copy the message and send it.\n"Can't wait for our first awkward date — I'll bring the jokes, you bring that smile."');});
+      },200);
+    });
+
+    document.getElementById('no').addEventListener('click', ()=>{
+      stopBgm();
+      finalEl.innerHTML = `<div style="text-align:center"><div style="font-size:20px;font-weight:700">Totally fair.</div><div style="color:var(--muted);margin-top:8px">No hard feelings. This person is brave for asking. Want a playful retry? There's a cheeky "try again" below.</div><div style="margin-top:12px"><button id=try class='btn' style='background:transparent;border:1px solid rgba(255,255,255,0.06)'>Try again (rewrite)</button></div></div>`;
+      setTimeout(()=>{const t=document.getElementById('try'); if(t) t.addEventListener('click', ()=>{resetAll(); flash('All reset. Be bolder. Or funnier. Your call.');});},100);
+    });
+
+    function resetAll(){ score=0; scoreEl.style.display='block'; scoreEl.textContent='Tap the heart to earn hearts — 7 opens the final surprise'; finalEl.style.display='none'; document.getElementById('quiz').querySelectorAll('.opt').forEach(x=>x.classList.remove('selected')); document.getElementById('quiz').style.opacity='1'; }
+
+    // --- Audio ---
+    const bgm=document.getElementById('bgm');
+    const audioToggle=document.getElementById('audioToggle');
+    audioToggle.addEventListener('click', ()=>{ if(bgm.paused){ playBgm(); audioToggle.textContent='Pause' } else { stopBgm(); audioToggle.textContent='Play' } });
+    function playBgm(){ bgm.play().catch(()=>{}); audioToggle.textContent='Pause'; }
+    function stopBgm(){ bgm.pause(); bgm.currentTime=0; audioToggle.textContent='Play'; }
+
+    // --- Confetti (lightweight) ---
+    const canvas = document.getElementById('confetti'); const ctx = canvas.getContext('2d'); let confettiPieces=[]; let confettiPlaying=false; function resize(){canvas.width=innerWidth;canvas.height=innerHeight;} window.addEventListener('resize',resize); resize();
+    function startConfetti(){ if(confettiPlaying) return; confettiPlaying=true; confettiPieces=[]; for(let i=0;i<120;i++){ confettiPieces.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height- canvas.height, r:Math.random()*6+4, d:Math.random()*20+10, color: ['#ff5c8a','#ffb6d5','#6fb3ff'][Math.floor(Math.random()*3)], tilt:Math.random()*10-10, tiltSpeed:Math.random()*.1+.05}); } renderConfetti(); setTimeout(()=>stopConfetti(),6000);} function stopConfetti(){ confettiPlaying=false; }
+    function renderConfetti(){ ctx.clearRect(0,0,canvas.width,canvas.height); if(!confettiPlaying) return; for(let i=0;i<confettiPieces.length;i++){ const p=confettiPieces[i]; p.y += Math.cos(p.d) + 2 + p.r/2; p.x += Math.sin(p.d); p.tilt += p.tiltSpeed; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.tilt * 0.03); ctx.fillStyle=p.color; ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*1.6); ctx.restore(); if(p.y>canvas.height+20){ p.y=-20; p.x=Math.random()*canvas.width; } } requestAnimationFrame(renderConfetti); }
+
+    // --- small accessibility niceties ---
+    document.addEventListener('keydown', e=>{ if(e.key==='Enter'){ heart.click(); } });
+
+    // friendly reminder: autoplay may be blocked by browser - users can press Play
+
+  </script></body>
+</html>
